@@ -2,8 +2,8 @@ module AresMUSH
     module Pools
       class DesperatePoolRequestHandler
         def handle(request)
-          scene = Scene[request.args[:scene_id]]
-          sender_name = request.args[:sender]
+          scene = Scene[request.args['scene_id']]
+          sender_name = request.args['sender']
           enactor = request.enactor
           
           

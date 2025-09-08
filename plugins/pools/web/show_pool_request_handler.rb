@@ -2,9 +2,9 @@ module AresMUSH
     module Pools
       class ShowPoolRequestHandler
         def handle(request)
-          scene = Scene[request.args[:scene_id]]
+          scene = Scene[request.args['scene_id']]
           enactor = request.enactor
-          sender_name = request.args[:sender]
+          sender_name = request.args['sender']
           
           request.log_request
           

@@ -2,10 +2,10 @@ module AresMUSH
     module Pools
       class AddPoolRequestHandler
         def handle(request)
-          scene = Scene[request.args[:scene_id]]        
-          reason = request.args[:reason]
-          amount = request.args[:amount]
-          sender_name = request.args[:sender]
+          scene = Scene[request.args['scene_id']]        
+          reason = request.args['reason']
+          amount = request.args['amount']
+          sender_name = request.args['sender']
   
           enactor = request.enactor
   
