@@ -14,7 +14,7 @@ module AresMUSH
       #    return { goals: Website.format_markdown_for_html(char.goals) }
       def self.get_fields_for_viewing(char, viewer)
         return {
-            dotcount: Dotcount.web_dotcount(char.name)
+            dotcount: Dotcount.web_dotcount(char.name),
           	items: Simpleinventory.get_items(char)
         }
       end
