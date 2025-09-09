@@ -21,15 +21,15 @@ module AresMUSH
       def check_errors
         return t('simple_inventory.invalid_name') if !self.target
         return t('simple_inventory.not_item') if !item_name
-        return t('simple_inventory.target_does_not_have_item') if !self.target_items ||
+        return t('simple_inventory.target_does_not_have_item') if !self.target.items ||
           !self.target.items.include?(self.item_name)
         return nil
       end
 
       def handle
-        target_items = self.target.items
-        target_items.delete_at(target_items.index(self.item_name))
-        self.target.update(items: target_items)
+        target.items = self.target.items
+        target.items.delete_at(target.items.index(self.item_name))
+        self.target.update(items: target.items)
 
         client.emit_success t('simple_inventory.removed_item', :item => item_name, :target => target.name)
 
