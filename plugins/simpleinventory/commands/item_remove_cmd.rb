@@ -4,15 +4,14 @@ module AresMUSH
       include CommandHandler
       # item/remove <name>=<item> - Remove an item from someone.
 
-      attr_accessor :target, :item_name, :item
+      attr_accessor :target, :item_name
 
       def parse_args
         args = cmd.parse_args(ArgParser.arg1_equals_arg2)
-        self.target = Character.find_one_by_name(args.arg1)
-        self.item_name = titlecase_arg(args.arg2)
+        self.target    = Character.find_one_by_name(args.arg1)
+        self.item_name = titlecase_arg(args.arg2)&.strip
         Global.logger.debug "Item name #{self.item_name}"
       end
-
 
       def check_can_set
         return t('dispatcher.not_allowed') if !enactor.has_permission?("manage_magic")
@@ -20,29 +19,29 @@ module AresMUSH
 
       def check_errors
         return t('simple_inventory.invalid_name') if !self.target
-        return t('simple_inventory.not_item') if !item_name
-        return t('simple_inventory.target_does_not_have_item') if !self.target.items ||
-          !self.target.items.include?(self.item_name)
-        return nil
+        return t('simple_inventory.not_item') if !item_name || item_name.empty?
+        items = Array(self.target.items)
+        return t('simple_inventory.target_does_not_have_item') if !items.include?(self.item_name)
+
+        nil
       end
 
       def handle
-        target.items = self.target.items
-        target.items.delete_at(target.items.index(self.item_name))
-        self.target.update(items: target.items)
+        items = Array(self.target.items).dup
+        removed = items.delete(self.item_name)
 
-        client.emit_success t('simple_inventory.removed_item', :item => item_name, :target => target.name)
+        if !removed
+          client.emit_failure t('simple_inventory.target_does_not_have_item')
+          return
+        end
 
-        message = t('simple_inventory.item_removed', :name => enactor.name, :item => item_name)
+        self.target.update(items: items)
+        client.emit_success t('simple_inventory.removed_item', item: item_name, target: target.name)
+
+        message = t('simple_inventory.item_removed', name: enactor.name, item: item_name)
         client.emit_success message
         Login.notify(self.target, :item, message, nil)
       end
-
-
-
-
-
-
     end
   end
 end
