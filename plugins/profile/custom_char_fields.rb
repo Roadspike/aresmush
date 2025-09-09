@@ -15,6 +15,7 @@ module AresMUSH
       def self.get_fields_for_viewing(char, viewer)
         return {
             dotcount: Dotcount.web_dotcount(char.name)
+          	items: Simpleinventory.get_items(char)
         }
       end
     
