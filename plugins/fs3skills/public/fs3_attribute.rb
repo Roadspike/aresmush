@@ -39,7 +39,7 @@ module AresMUSH
       when 4
         return t('fs3skills.exceptional_rating')
       when 5
-        return t('fs3skills.extraordinary_rating')
+        return t('fs3skills.amazing_rating')
       end
     end
   end
