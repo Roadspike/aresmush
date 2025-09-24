@@ -3,8 +3,11 @@ module AresMUSH
     
     def self.custom_char_card_fields(char, viewer)
       
-      # Return nil if you don't need any custom fields.
-      return nil
+    def self.get_fields_for_viewing(char, viewer)
+      return {
+          items: Simpleinventory.get_items(char)
+      }
+    end
       
       # Otherwise return a hash of data.  For example, if you want to show traits you could do:
       # {
