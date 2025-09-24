@@ -6,6 +6,5 @@ module AresMUSH
         items: Simpleinventory.get_items(char)
       }
     end
-    end
   end
 end
