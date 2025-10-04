@@ -37,6 +37,17 @@ module AresMUSH
           roles = roles[:roles]
         end
         
+        if (Achievements.is_enabled?)  
+          achievements = {}
+          alts = AresCentral.alts(player)
+          alts = alts.concat Character.all.select { |c| c.content_tags.include?("player:#{player.name}".downcase)}
+          alts.each do |alt|
+            achievements[alt.name] = Achievements.build_achievements(alt)
+          end
+        else 
+          achievements = nil
+        end
+        
         prefs = Manage.is_extra_installed?("prefs") ? Website.format_markdown_for_html(player.rp_prefs) : nil
         
          {
@@ -46,7 +57,7 @@ module AresMUSH
            icon: Website.icon_for_char(player),
            alts: player.alts.map { |a| {name: a.name, icon: Website.icon_for_char(a)} },
            can_manage: enactor && Profile.can_manage_char_profile?(enactor, player),
-           achievements: Achievements.is_enabled? ? Achievements.build_achievements(player) : nil,
+           achievements: achievements,
            admin_role_title: player.role_admin_note,
            profile: profile,
            rp_prefs: prefs,

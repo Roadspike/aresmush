@@ -50,7 +50,7 @@ module AresMUSH
       def export_uploads
         Global.logger.debug "Exporting uploads for #{@char.name}."
 
-        upload_path = File.join(AresMUSH.game_path, 'uploads', @char.name)
+        upload_path = File.join(AresMUSH.game_path, 'uploads', Profile.character_page_folder(@char))
         
         if (File.exist?(upload_path))
           FileUtils.cp_r upload_path, self.path_for_folder("uploads")
@@ -101,6 +101,11 @@ module AresMUSH
         
         File.open(File.join(self.path_for_folder("profile"), "descs.txt"), "w") do |file|
           descs = Describe.export_descs(@char)
+          file.write AnsiFormatter.strip_ansi(MushFormatter.format(descs))
+        end
+        
+        File.open(File.join(self.path_for_folder("profile"), "achievements.txt"), "w") do |file|
+          descs = Achievements.export_achievements(@char)
           file.write AnsiFormatter.strip_ansi(MushFormatter.format(descs))
         end
         

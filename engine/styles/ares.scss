@@ -2257,7 +2257,6 @@ input[type='file'] {
   margin-right: 10px;
 }
 
-
 .fs3-dots-attribute > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-0,
 .fs3-dots-action > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-0, 
 .fs3-dots-action > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-1,
@@ -2281,7 +2280,7 @@ color: $muted-yellow;
 .fs3-dots-action > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-5,
 .fs3-dots-background > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-2,
 .fs3-dots-language > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-2,
-.fs3-dots-advantage > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-1 {
+.fs3-dots-advantage > .fas.fa-circle.fa-sm.char-dot-fill.fs3-dot-2 {
 color: $muted-green;
 }
 
@@ -2790,6 +2789,12 @@ LOCATIONS SCREEN
 .location-entry h3 {
   font-size: 1em;
   margin: 0px;
+}
+
+.location-legend {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .location-buttons {

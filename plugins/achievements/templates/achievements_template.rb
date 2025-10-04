@@ -15,6 +15,10 @@ module AresMUSH
         return nil if !Achievements.can_manage_achievements?(self.viewer)
         "%xh%xx(#{name})%xn"
       end
+      
+      def format_message(data)
+        Achievements.achievement_message(data)
+      end
     end
   end
 end

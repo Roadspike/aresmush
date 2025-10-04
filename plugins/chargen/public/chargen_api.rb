@@ -87,6 +87,7 @@ module AresMUSH
       end
     end    
       
+    # Approved AND active - won't count npcs, rosters, dead, etc.
     def self.approved_chars
       Idle.active_chars.select { |c| c.is_approved? }
     end

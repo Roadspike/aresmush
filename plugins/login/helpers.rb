@@ -63,13 +63,10 @@ module AresMUSH
       return false if char && char.is_admin?
 
       # Check explicitly banned sites.
-      banned = Game.master.banned_sites || {}
-      banned.each do |s, desc|
-        if (Login.is_site_match?(ip_addr, hostname, s, s))
-          return true
-        end
+      if (Game.master.is_banned_site?(ip_addr, hostname))
+        return true
       end
-      
+            
       # If the character is not approved and proxy ban is enabled, check the proxy list.
       return false if !Global.read_config("sites", "ban_proxies")
       return false if char && char.is_approved?

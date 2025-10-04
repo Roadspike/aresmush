@@ -81,17 +81,19 @@ module AresMUSH
           @char = double
           @game = double
           allow(Game).to receive(:master) { @game }
-          allow(@game).to receive(:banned_sites) { { "123.45.678" => "Reason" }}
+          allow(@game).to receive(:is_banned_site?) {  false }
           allow(config_reader).to receive(:get_text).with("blacklist.txt") { "234.56.789\n345.67.890" }
         end
         
         it "should never ban an admin" do
           allow(@char).to receive(:is_admin?) { true }
+          allow(@game).to receive(:is_banned_site?).with("123.45.678", "somehost") {  true }          
           expect(Login.is_banned?(@char, "123.45.678", "somehost")).to eq false
         end
         
         it "should block someone on the ban list" do
           allow(@char).to receive(:is_admin?) { false }
+          expect(@game).to receive(:is_banned_site?).with("123.45.678", "somehost") {  true }          
           expect(Login.is_banned?(@char, "123.45.678", "somehost")).to eq true
         end
         
@@ -122,33 +124,6 @@ module AresMUSH
             expect(Login.is_banned?(@char, "345.67.890", "somehost")).to eq true            
           end
         end
-      end
-      
-      describe :is_site_match? do
-        it "should match an IP" do
-          expect(Login.is_site_match?("123.45.67.89", "", "123.45.67.89", "somesite.com")).to eq true
-        end
-
-        it "should match a host" do
-          expect(Login.is_site_match?("", "somesite.com", "111", "somesite.com")).to eq true
-        end
-
-        it "should match a partial IP" do
-          expect(Login.is_site_match?("123.45.67.89.111", "", "123.45", "somesite.com")).to eq true
-        end
-
-        it "should match a partial host" do
-          expect(Login.is_site_match?("", "pa.142.xyz.abc.somesite.com", "123.45", "somesite.com")).to eq true
-        end
-        
-        it "should not match a different IP" do
-          expect(Login.is_site_match?("234.56.78.90", "", "123.45.67.89", "somesite.com")).to eq false
-        end
-
-        it "should not match a different host" do
-          expect(Login.is_site_match?("othersite.com", "", "123.45.67.89", "somesite.com")).to eq false
-        end
-        
       end
       
       describe :name_taken? do

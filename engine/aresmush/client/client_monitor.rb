@@ -66,12 +66,24 @@ module AresMUSH
       self.web_clients.select { |c| c.char_id == char.id }.sort_by { |c| c.idle_secs }.first
     end
     
+    def total_connections(ip_addr)
+      self.all_clients.select { |c| c.ip_addr == ip_addr }.count
+    end
+    
     # @engineinternal true
     def connection_established(connection)
       begin
+        max_connections = Global.read_config("sites", "max_connections") || 20
+        if (self.total_connections(connection.ip_addr) > max_connections)
+          Global.logger.debug "Too many connections from #{connection.ip_addr}."
+          connection.close_connection
+          return
+        end
+        
         client = @client_factory.create_client(connection)
         @clients << client
         client.connected
+        
         if (!client.is_web_client?)
           Global.dispatcher.queue_event ConnectionEstablishedEvent.new(client)
         end

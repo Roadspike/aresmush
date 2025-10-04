@@ -82,42 +82,63 @@ module AresMUSH
     
     describe :connection_established do
       before do
-        @client3 = double(Client).as_null_object
-        @connection = double(Connection).as_null_object
+        @client3 = double(Client)
+        @connection = double(Connection)
+
+        allow(@connection).to receive(:ip_addr) { "123.45.678" }
+        allow(@client_monitor).to receive(:total_connections).with("123.45.678") { 0 }
+
+
+        allow(Global).to receive(:read_config).with("sites", "max_connections") { 5 }
       end
 
-      it "should create a client" do
-        expect(@factory).to receive(:create_client).with(@connection) { @client3 }
-        @client_monitor.connection_established(@connection)
-      end
-
-      it "should add the client to the list" do
-        allow(@factory).to receive(:create_client) { @client3 }
-        @client_monitor.connection_established(@connection)
-        expect(@client_monitor.clients).to include @client3
-      end
-
-      it "should tell the client it has connected" do
-        allow(@factory).to receive(:create_client) { @client3 }
-        expect(@client3).to receive(:connected)
-        @client_monitor.connection_established(@connection)
-      end
-      
-      it "should notify the dispatcher for a game client" do
-        allow(@factory).to receive(:create_client) { @client3 }
-        allow(@client3).to receive(:is_web_client?) { false }
-        expect(dispatcher).to receive(:queue_event) do |event|
-          expect(event.class).to eq ConnectionEstablishedEvent
-          expect(event.client).to eq @client3
+      describe :success do
+        before do
+          allow(dispatcher).to receive(:queue_event)
+          allow(@client3).to receive(:is_web_client?) { false }
+          allow(@client3).to receive(:connected)
         end
-        expect(Global.logger).to_not receive(:debug)
-        @client_monitor.connection_established(@connection)
+        
+        it "should create a client" do
+          expect(@factory).to receive(:create_client).with(@connection) { @client3 }
+          @client_monitor.connection_established(@connection)
+        end
+
+        it "should add the client to the list" do
+          allow(@factory).to receive(:create_client) { @client3 }
+          @client_monitor.connection_established(@connection)
+          expect(@client_monitor.clients).to include @client3
+        end
+
+        it "should tell the client it has connected" do
+          allow(@factory).to receive(:create_client) { @client3 }
+          expect(@client3).to receive(:connected)
+          @client_monitor.connection_established(@connection)
+        end
+        
+        it "should notify the dispatcher for a game client" do
+          allow(@factory).to receive(:create_client) { @client3 }
+          expect(dispatcher).to receive(:queue_event) do |event|
+            expect(event.class).to eq ConnectionEstablishedEvent
+            expect(event.client).to eq @client3
+          end
+          expect(Global.logger).to_not receive(:debug)
+          @client_monitor.connection_established(@connection)
+        end
+      
+        it "should NOT notify the dispatcher for a web client" do
+          allow(@factory).to receive(:create_client) { @client3 }
+          allow(@client3).to receive(:is_web_client?) { true }
+          expect(dispatcher).to_not receive(:queue_event)
+          @client_monitor.connection_established(@connection)
+        end
       end
       
-      it "should NOT notify the dispatcher for a web client" do
-        allow(@factory).to receive(:create_client) { @client3 }
-        allow(@client3).to receive(:is_web_client?) { true }
+      it "should reject too many connections" do
+        expect(@client_monitor).to receive(:total_connections).with("123.45.678") { 20 }
+        expect(@factory).to_not receive(:create_client)
         expect(dispatcher).to_not receive(:queue_event)
+        expect(@connection).to receive(:close_connection)
         @client_monitor.connection_established(@connection)
       end
     end

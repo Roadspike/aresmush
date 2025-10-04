@@ -29,7 +29,16 @@ module AresMUSH
     def connection_opened(handshake)
       begin
         @ip_addr = get_ip
-        ready_callback.call(self)
+        
+        # Deny banned sites and send back nil to indicate a rejected connection
+        if (Game.master.is_banned_site?(@ip_addr, ""))
+          self.close_connection
+          ready_callback.call(nil)
+        else
+          ready_callback.call(self)
+        end
+                                                    
+        
       rescue Exception => e
         Global.logger.warn "Error opening connection:  error=#{e} backtrace=#{e.backtrace[0,10]}."
       end

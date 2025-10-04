@@ -198,5 +198,32 @@ module AresMUSH
         expect(@client.char).to eq nil
       end
     end
+    
+    describe :is_site_match? do
+      it "should match an IP" do
+        expect(Client.is_site_match?("123.45.67.89", "", "123.45.67.89", "somesite.com")).to eq true
+      end
+
+      it "should match a host" do
+        expect(Client.is_site_match?("", "somesite.com", "111", "somesite.com")).to eq true
+      end
+
+      it "should match a partial IP" do
+        expect(Client.is_site_match?("123.45.67.89.111", "", "123.45", "somesite.com")).to eq true
+      end
+
+      it "should match a partial host" do
+        expect(Client.is_site_match?("", "pa.142.xyz.abc.somesite.com", "123.45", "somesite.com")).to eq true
+      end
+      
+      it "should not match a different IP" do
+        expect(Client.is_site_match?("234.56.78.90", "", "123.45.67.89", "somesite.com")).to eq false
+      end
+
+      it "should not match a different host" do
+        expect(Client.is_site_match?("othersite.com", "", "123.45.67.89", "somesite.com")).to eq false
+      end
+      
+    end
   end
 end

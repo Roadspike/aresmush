@@ -61,7 +61,7 @@ module AresMUSH
     
     def close_connection(after_writing = false)
       begin
-        Global.logger.info("Client #{self.client.id} disconnected.")
+        Global.logger.info("Client #{self.client ? self.client.id : self.ip_addr} disconnected.")
         super
       rescue Exception => e
         Global.logger.warn "Couldn't close connection:  error=#{e} backtrace=#{e.backtrace[0,10]}."
@@ -126,7 +126,9 @@ module AresMUSH
 
     def unbind
       begin
-        @client.connection_closed
+        if (@client)
+          @client.connection_closed
+        end
       rescue Exception => e
         Global.logger.warn "Error closing connection:  error=#{e} backtrace=#{e.backtrace[0,10]}."
       end
