@@ -17,9 +17,8 @@ module AresMUSH
         end
         
         weather = weather(room)
-        if (weather)
-          desc << " "
-          desc << weather
+          if (weather)
+          desc << "%R%R%x256Weather:%xn%R#{weather}"
         end
         
         desc
