@@ -25,6 +25,17 @@ module AresMUSH
       nil
     end
 
+    def self.get_cmd_handler(client, cmd, enactor)
+      return nil if !cmd.root_is?("weather")
+      case cmd.switch
+      when "reset"
+        return OpenweatherResetCmd
+      when nil  
+        return OpenweatherCmd
+      end
+      nil
+    end
+
     def self.get_event_handler(event_name)
       nil
     end
