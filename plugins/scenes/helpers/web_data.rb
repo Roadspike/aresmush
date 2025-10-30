@@ -125,7 +125,8 @@ module AresMUSH
          key: "detail-#{index}"
          }
        } : []
-    end
+     }
+   end
     
     def self.build_pose_order_web_data(scene)
       return [] if !scene.room
