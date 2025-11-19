@@ -40,13 +40,12 @@ module AresMUSH
             end
             
            def resolve
-                def self.juryrig(pilot_char_or_npc, tech_char_or_npc)
                     tech_model = self.combatant
                     vehicle_model = self.combat.find_vehicle_by_name(self.action_args)
                     pilot_model = vehicle_model.pilot
 
                     if (!wound)
-                       return "#{tech_model} tried to repair #{vehicle_model} but it has no repairable damage."
+                       return "#{tech_model.name} tried to repair #{vehicle_model.name} but it has no repairable damage."
                     end
        
                     skill = FS3Combat.juryrig_skill 
@@ -55,20 +54,14 @@ module AresMUSH
                     successes = roll[:successes]
 
                     if (successes <= 0)
-                       return "#{tech_model} failed to repair #{pilot_model}."
+                       return "#{tech_model.name} failed to repair #{pilot_model.name}."
                     end
        
-                    combat = FS3Combat.combat(healer_name)
-                        if (combat)
-                        combat.log "Juryrig: #{tech_model} repairing #{pilot_model}: #{roll}"
-                        else
-                        Global.logger.info "Juryrig: #{tech_model} treating #{pilot_model}: #{roll}"
-                    end
+                    self.combat.log "Juryrig: #{tech_model.name} repairing #{pilot_model.name}: #{roll}"
 
                     FS3Combat.heal(wound, 1)
-                        "#{tech_model.name} successfully repaired #{pilot_model} worst damage."
-                     end
-                    FS3Combat.check_for_unko(self.target)
+                        "#{tech_model.name} successfully repaired #{pilot_model.name} worst damage."
+                    FS3Combat.check_for_unko(pilot_model)
                       if (!self.combatant.is_npc?)
                   
                     Achievements.award_achievement(self.combatant.associated_model, "fs3_juryrigged")  
