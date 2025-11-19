@@ -9,7 +9,9 @@ module AresMUSH
     #      'mindtrick' => MindTrickAction
     #   }
     def self.custom_actions
-      {}
+      {
+        'juryrig' => JuryrigAction
+      }
     end
     
     # Here you can do any custom processing that needs to happen at the end of each turn.
