@@ -278,7 +278,7 @@ module AresMUSH
         is_npc: combatant.is_npc?,
         team: combatant.team,
         ammo: combatant.ammo ? "(#{combatant.ammo})" : '',
-        damage_boxes: ([-combatant.total_damage_mod.floor, 5].min).times.map { |d| d },
+        damage_boxes: ([-combatant.total_damage_mod.floor, 6].min).times.map { |d| d },
         damage: FS3Combat.damage_list_web_data(combatant.associated_model, false),
         damage_mod: combatant.total_damage_mod.floor,
         vehicle: combatant.vehicle ? "#{combatant.vehicle.name} #{combatant.piloting ? 'Pilot' : 'Passenger'}" : "" ,
