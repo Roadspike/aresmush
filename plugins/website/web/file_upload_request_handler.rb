@@ -20,6 +20,10 @@ module AresMUSH
           return { error: t('webportal.missing_required_fields', :fields => "name, folder") }
         end
         
+        if (folder.include?("/"))
+          return { error: t('webportal.subfolders_not_allowed') }
+        end
+        
         is_wiki_admin = Website.can_manage_wiki?(enactor)
         is_theme_admin = Website.can_manage_theme?(enactor)
         extension = File.extname(name) || ""

@@ -22,7 +22,7 @@ module AresMUSH
       
       def cleanup_char_backups
         WikiCharBackup.all.each do |backup|
-          if (backup.hours_old > 48)
+          if (backup.hours_old > WikiCharBackup.retention_hours)
             Global.logger.debug "Deleting old backup #{backup.file}"
             backup.delete
           end

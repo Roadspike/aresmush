@@ -7,6 +7,10 @@ module AresMUSH
     
     before_delete :delete_backup
     
+    def self.retention_hours
+      48
+    end
+    
     def file_path
       File.join(AresMUSH.game_path, self.file)
     end

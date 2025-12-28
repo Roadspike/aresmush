@@ -10,4 +10,5 @@ en:
       achievements_title: "Achievements for %{name}"
       achievement_noification_message: "New achievement: %{message}"
       all_achievements_title: "All Achievements"
-      
+      achievements_earned_title: "Achievements Earned"
+      achievements_earned_message: "Achievements earned in the last %{days} days:"

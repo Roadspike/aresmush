@@ -276,6 +276,11 @@ module AresMUSH
       return nil
     end
     
+    def self.expire_web_login(char)
+      char.update(login_api_token: nil)
+      char.update(login_api_token_expiry: Time.now - 86400*5)
+      Global.client_monitor.web_clients.select { |c| c.char_id == char.id.to_s }.each { |c| c.disconnect }
+    end
     
     def self.boot_char(enactor, bootee, boot_reason)
       
@@ -303,8 +308,7 @@ module AresMUSH
       end
       
       # Boot from portal
-      bootee.update(login_api_token: nil)
-      Global.client_monitor.web_clients.select { |c| c.char_id == bootee.id.to_s }.each { |c| c.disconnect }
+      Login.expire_web_login(bootee)
       
       host_and_ip = "IP: #{bootee.last_ip}  Host: #{bootee.last_hostname}"
       Global.logger.warn "#{bootee.name} booted by #{enactor.name}.  #{host_and_ip}"

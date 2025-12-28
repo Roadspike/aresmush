@@ -35,5 +35,9 @@ module AresMUSH
     def is_active_or_npc?
       self.is_active? || (self.is_npc? && !self.idled_out?)
     end
+    
+    def is_active_or_roster?
+      self.is_active? || self.on_roster?
+    end
   end
 end

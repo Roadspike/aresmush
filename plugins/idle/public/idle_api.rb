@@ -7,6 +7,10 @@ module AresMUSH
     def self.active_chars_and_npcs
       Character.all.select { |c| c.is_active_or_npc? }
     end
+    
+    def self.active_chars_and_rosters
+      Character.all.select { |c| c.is_active_or_roster? }
+    end
   
     def self.build_web_profile_data(char, viewer)
       if (char.on_roster?)

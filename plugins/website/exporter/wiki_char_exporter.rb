@@ -6,7 +6,8 @@ module AresMUSH
     class WikiCharExporter
       def initialize(char)
         @char = char
-        @export_path = File.join(AresMUSH.root_path, "wiki_export", @char.id)
+        @id = SecureRandom.uuid
+        @export_path = File.join(AresMUSH.root_path, "tmp_export", @id)
       end
       
       def path_for_folder(folder)
@@ -28,7 +29,7 @@ module AresMUSH
           export_scenes
          
                   
-          backup_filename = "export_#{@char.id}.zip"
+          backup_filename = "export_#{@char.id}_#{@id}.zip"
           backup_path = File.join(AresMUSH.game_path, backup_filename)
           FileUtils.rm backup_path, :force=>true
           Zip::File.open(backup_path, 'w') do |zipfile|

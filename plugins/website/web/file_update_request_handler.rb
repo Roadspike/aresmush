@@ -20,6 +20,11 @@ module AresMUSH
         if (!Website.can_edit_wiki_file?(enactor, folder))
           return { error: t('dispatcher.not_allowed') }
         end
+                
+        if (new_folder.include?("/"))
+          return { error: t('webportal.subfolders_not_allowed') }
+        end
+        
         
         new_name = AresMUSH::Website::FilenameSanitizer.sanitize new_name
         new_folder = AresMUSH::Website::FilenameSanitizer.sanitize new_folder

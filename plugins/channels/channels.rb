@@ -106,6 +106,8 @@ module AresMUSH
         return DownloadChatRequestHandler
       when "editChannel"
         return EditChannelRequestHandler
+      when "flagChatMessage"
+        return FlagChatRequestHandler
       when "joinChannel"
         return JoinChannelRequestHandler
       when "leaveChannel"

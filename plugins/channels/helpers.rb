@@ -329,6 +329,12 @@ module AresMUSH
       end
     end
             
+    def self.is_message_visible?(viewer, message)      
+      return false if viewer && viewer.has_channel_blocked?(message.author)
+      return false if message.flagged && !Channels.can_manage_channels?(viewer)
+      return true
+    end
+    
     def self.notify_discord_webhook(channel, message, enactor)
       debug_enabled = Global.read_config('channels', 'discord_debug')
       name_subs = Global.read_config('channels', 'discord_name_subs') || {}
@@ -382,10 +388,11 @@ module AresMUSH
           messages = []
         else
           messages = channel.sorted_channel_messages
-            .select { |m| !enactor.has_channel_blocked?(m.author) }
+            .select { |m| Channels.is_message_visible?(enactor, m) }
             .map { |m| {
             message: Website.format_markdown_for_html(m.message),
             id: m.id,
+            flagged: m.flagged,
             timestamp: OOCTime.local_short_date_and_time(enactor, m.created_at),
             author: {
               name: m.author_name,
@@ -403,6 +410,7 @@ module AresMUSH
           enabled: chars_on_channel.any?,
           can_join: alts.map { |a| Channels.can_join_channel?(a, channel) }.any?,
           can_talk: alts.map { |a| Channels.can_talk_on_channel?(a, channel) }.any?,
+          can_manage: Channels.can_manage_channels?(enactor),
           muted: Channels.is_muted?(enactor, channel),
           last_activity: channel.last_activity,
           is_recent: channel.last_activity ? (Time.now - channel.last_activity < (86400 * 2)) : false,

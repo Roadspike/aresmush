@@ -56,7 +56,7 @@ module AresMUSH
             Game.master.system_character)
             
           statue.update(is_statue: self.option)
-          statue.update(login_api_token: nil)
+          Login.expire_web_login(statue)
         end
       end
     end

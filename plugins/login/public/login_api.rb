@@ -69,12 +69,12 @@ module AresMUSH
     def self.set_random_password(char)
       password = Login.generate_random_password
       char.change_password(password)
-      char.update(login_api_token: '')
-      char.update(login_api_token_expiry: Time.now - 86400*5)
-      char.update(login_failures: 0)      
+      char.update(login_failures: 0)
+      Login.expire_web_login(char)
       password
     end
     
+    # Creates a bell notification - does NOT emit any messages to online chars
     def self.notify(char, type, message, reference_id, data = "", notify_if_online = true)
       unless notify_if_online
         status = Website.activity_status(char)

@@ -99,6 +99,8 @@ module AresMUSH
     end
     
     def receive_data(data)
+      return if !@client
+      
       begin
         json_input = JSON.parse(data)
         

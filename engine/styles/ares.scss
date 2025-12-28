@@ -200,19 +200,19 @@ BOOTSTRAP OVERRIDES
   color: #6edff6;
 }
 
-.alert-success, .btn-success {
+.alert-success, .btn-success, .label-success {
   background-color: #051b11;
   border-color: #0f5132;
   color: #75b798;
 }
 
-.alert-warning, .btn-warning {
+.alert-warning, .btn-warning, .label-warning {
   background-color: #332701;
   border-color: #997404;
   color: #ffda6a;
 }
 
-.alert-danger, .btn-danger {
+.alert-danger, .btn-danger, .label-danger  {
   background-color: #2c0b0e;
   border-color: #842029;
   color: #ea868f;
@@ -2005,6 +2005,44 @@ SCENES SCREEN
 }
 
 /* -------------------------
+PLOTS SCREEN
+-------------------------- */
+.plot-container {
+  margin-bottom: 20px;
+  background-color: $box-background-color;
+  border: 1px solid $border-color;
+}
+
+.plot-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $primary-color;
+  padding: 5px;
+  font-size: 1.25rem; 
+}
+
+.plot-header a {
+  color: $primary-words-color;
+}  
+
+.plot-subheader {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid $border-color;
+  margin: 0px 5px; 
+}
+
+.plot-storytellers-icon, .plot-dates-icon {
+  margin-right: 5px;
+}
+  
+.plot-summary {
+  padding: 5px;
+}
+
+/* -------------------------
 CHARACTERS SCREEN
 ------------------------- */
 
@@ -2346,8 +2384,33 @@ color: $muted-blue;
   width: 100%;
 }
 
+.roster-wrap {
+    border: 1px solid $primary-outline-color; 
+    background-color: $background-color;
+    padding:15px; 
+    margin-top: -10px;
+    background-position:left top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image:url('/game/uploads/theme_images/box-bg.png');
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
 .roster-info {
-  padding: 10px;
+  padding: 10px;  
+  background-color: $box-background-color;
+  color: $box-words-color;
+  margin-left: 15px;
+  flex-grow: 1;
+}
+
+.roster-buttons {
+  width: 100%;
+  text-align: right;
+  margin-top: 15px;
 }
 
 .roster-char-title {
@@ -2471,6 +2534,15 @@ CHAT SCREEN
 .chat-control-row {
   margin: 0px;
   padding: 0px 15px 0px 0px;
+}
+
+.chat-join-note {
+  margin: 5px;  
+}
+
+.chat-msg-flagged {
+  border: 1px solid $border-color;
+  background-color: $box-background-color;
 }
 
 .play-section-title {
@@ -2792,10 +2864,14 @@ LOCATIONS SCREEN
 }
 
 .location-legend {
-  display: flex;
-  flex-direction: row;
+  display: grid;
   gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  font-size: 0.9rem;
+  margin-bottom: 20px; 
 }
+
+
 
 .location-buttons {
   align-self: center;

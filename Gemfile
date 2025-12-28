@@ -15,10 +15,10 @@ gem 'ansi', '~> 1.5'
 gem 'ohm', '~> 3.1.1'
 
 # engine webserver
-gem 'rack', '~> 2.2.18'
-gem 'sinatra', '>= 3.0.2'
+gem 'rack', '~> 2.2.21'
+gem 'sinatra', '>= 3.2.0'
 gem 'sinatra-cross_origin', '~>0.4.0'
-gem 'thin', "~> 1.8.1"
+gem 'thin', "~> 1.8.2"
 
 # ERB parser
 gem 'erubis', '~> 2.7.0'
@@ -44,7 +44,7 @@ gem 'redcarpet', '~> 3.5.1'
 gem 'htmlentities', '~>4.3.4'
 
 # Backups
-gem 'aws-sdk-s3', '~> 1.184'
+gem 'aws-sdk-s3', '~> 1.208'
 gem 'rubyzip',  '~> 1.3.0'
 gem 'rexml', '~> 3.4.2'
 
