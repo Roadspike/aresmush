@@ -29,7 +29,7 @@ You can talk on a channel using the full channel name followed by the message.  
 `<channel name or alias> <message>` - Talks on a channel.
 `channels` - Views your current channel aliases.
 `channel/alias <channel>=<alias>` - Changes the alias.  You can use multiple aliases, separated by spaces.
-`channel/recall <channel>[=<num messages>]` - Shows the last few messages on a channel.
+`channel/review <channel>[=<num messages>]` - Shows the last few messages on a channel.
 
 > **Tip:** Take care to avoid channel aliases that overlap with other commands, like 'n' for north or 'p' for page.  Remember that AresMUSH ignores prefixes like '+' on commands.
 
